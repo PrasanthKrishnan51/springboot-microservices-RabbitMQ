@@ -1,0 +1,42 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: inventory-service
+
+  data:
+    mongodb:
+      uri: mongodb://mongo:mongo123@localhost:27017/inventorydb?authSource=admin
+      database: inventorydb
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 10
+
+rabbitmq:
+  exchange:
+    order: order.exchange
+  queue:
+    order-created: order.created.queue
+    inventory-response: inventory.response.queue
+  routing-key:
+    order-created: order.created
+    inventory-response: inventory.response
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+logging:
+  level:
+    com.example.inventoryservice: DEBUG
